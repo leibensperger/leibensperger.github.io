@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Snow Depth Interactive Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+        .info-box {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .info-box h4 {
+            margin: 0 0 5px;
+            color: #333;
+        }
+        .legend {
+            line-height: 18px;
+            color: #555;
+        }
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        // Initialize the map centered on Ithaca area
+        var map = L.map('map').setView([42.44, -76.50], 12);
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Snow depth data
+        var snowData = [
+            {depth: 5, lat: 42.41934, lon: -76.49620, who: "Sanchez"},
+            {depth: 6.875, lat: 42.42467, lon: -76.49244, who: "Chavaro"},
+            {depth: 8, lat: 42.42575, lon: -76.4915, who: "Fernandez"},
+            {depth: 8.75, lat: 42.4113, lon: -76.502, who: "Iqbal"},
+            {depth: 7.8, lat: 42.4384, lon: -76.4935, who: "Bellamy"},
+            {depth: 8.2, lat: 42.42899, lon: -76.49054, who: "Brady"},
+            {depth: 6.75, lat: 42.4379936, lon: -76.4941736, who: "Dunn"},
+            {depth: 11, lat: 42.42548, lon: -76.49225, who: "Flaherty"},
+            {depth: 7.5, lat: 42.42226, lon: -76.49295, who: "Fosbrook"},
+            {depth: 7, lat: 42.4121312, lon: -76.5005285, who: "Hummel"},
+            {depth: 7, lat: 42.411231, lon: -76.502609, who: "Jelley"},
+            {depth: 7.25, lat: 42.4261111, lon: -76.4836111, who: "Jeremiah"},
+            {depth: 6.75, lat: 42.41237, lon: -76.49942, who: "Kraenzel"},
+            {depth: 7, lat: 42.428611, lon: -76.489772, who: "Lantzy"},
+            {depth: 8.25, lat: 42.4215, lon: -76.4951, who: "Leon"},
+            {depth: 6.25, lat: 42.413056, lon: -76.500833, who: "Martin"},
+            {depth: 8.5, lat: 42.425833, lon: -76.491111, who: "Meneses"},
+            {depth: 7, lat: 42.42716, lon: -76.49286, who: "Martin"},
+            {depth: 7, lat: 42.42257, lon: -76.49328, who: "Morgan"},
+            {depth: 6, lat: 42.41366, lon: -76.49924, who: "Mozloom"},
+            {depth: 7.75, lat: 42.41068, lon: -76.49974, who: "Rae"},
+            {depth: 9, lat: 42.41897, lon: -76.49691, who: "Schoenenberger"},
+            {depth: 6.5, lat: 42.4217, lon: -76.4947, who: "Simon"},
+            {depth: 7.25, lat: 42.41269, lon: -76.50056, who: "Skojec"},
+            {depth: 9, lat: 42.41897, lon: -76.49707, who: "Sperger"},
+            {depth: 8.25, lat: 42.4153, lon: -76.501, who: "Stanford"},
+            {depth: 7, lat: 42.419, lon: -76.497, who: "Stefanelli"},
+            {depth: 7, lat: 42.42974, lon: -76.49342, who: "Wallens"},
+            {depth: 8.25, lat: 42.41608199, lon: -76.48204597, who: "Leibensperger"},
+            {depth: 6.5, lat: 42.44886401, lon: -76.50662907693248, who: "Leibensperger"},
+            {depth: 9, lat: 42.3515696, lon: -76.4572176, who: "Joseph"},
+            {depth: 8.25, lat: 42.4012764, lon: -76.4871104, who: "Sullivan"},
+            {depth: 7, lat: 42.5248202, lon: -76.6625675, who: "Mellott"}
+        ];
+
+        // Function to get color based on depth
+        function getColor(depth) {
+            return depth > 10 ? '#b2182b' :
+                   depth > 9  ? '#d6604d' :
+                   depth > 8  ? '#f4a582' :
+                   depth > 7  ? '#fddbc7' :
+                   depth > 6  ? '#d1e5f0' :
+                   depth > 5  ? '#92c5de' :
+                                '#4393c3';
+        }
+
+        // Add markers for each measurement
+        snowData.forEach(function(point) {
+            var circle = L.circleMarker([point.lat, point.lon], {
+                radius: 8,
+                fillColor: getColor(point.depth),
+                color: '#000',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.95
+            }).addTo(map);
+
+            circle.bindPopup(
+                '<div class="info-box">' +
+                '<b>Snow Depth:</b> ' + point.depth + ' inches<br>' +
+                '<b>Location:</b> ' + point.lat.toFixed(5) + ', ' + point.lon.toFixed(5) +
+                '</div>'
+            );
+        });
+
+        // Add legend
+        var legend = L.control({position: 'bottomright'});
+        legend.onAdd = function(map) {
+            var div = L.DomUtil.create('div', 'info-box legend');
+            div.innerHTML = '<h4>Snow Depth (inches)</h4>';
+            var grades = [5, 6, 7, 8, 9, 10];
+            var labels = [];
+
+            for (var i = 0; i < grades.length; i++) {
+                labels.push(
+                    '<i style="background:' + getColor(grades[i] + 0.1) + '"></i> ' +
+                    grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] : '+')
+                );
+            }
+            div.innerHTML += labels.join('<br>');
+            return div;
+        };
+        legend.addTo(map);
+
+        // Add info box with statistics
+        var info = L.control({position: 'topright'});
+        info.onAdd = function(map) {
+            var div = L.DomUtil.create('div', 'info-box');
+            div.innerHTML = '<h4>Snow Depth Survey</h4>' +
+                           '<b>Date:</b> January 26, 2026<br>' +
+                           '<b>Measurements:</b> 33<br>' +
+                           '<b>Range:</b> 5" - 11"<br>' +
+                           '<b>Average:</b> 7.64"<br>' +
+                           '<b>Median:</b> 7.25"';
+            return div;
+        };
+        info.addTo(map);
+    </script>
+</body>
+</html>
