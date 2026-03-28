@@ -1,26 +1,458 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<script type="text/javascript">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eric M. Leibensperger</title>
+  <style>
+    :root {
+      --blue: #3a6fa0;
+      --blue-dark: #2c5580;
+      --blue-light: #eaf1f8;
+      --text: #222;
+      --muted: #555;
+      --border: #d0dce8;
+    }
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-36065094-1']);
-  _gaq.push(['_trackPageview']);
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: var(--text);
+      background: #fff;
+      line-height: 1.7;
+    }
 
-</script>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Eric M. Leibensperger</title>
+    /* ── NAV ── */
+    nav {
+      background: var(--blue);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,.25);
+    }
+    nav .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: .25rem;
+    }
+    nav .site-name {
+      font-size: 1.35rem;
+      font-weight: bold;
+      color: #fff;
+      padding: .85rem 0;
+      margin-right: auto;
+      text-decoration: none;
+    }
+    nav a.nav-link {
+      color: rgba(255,255,255,.9);
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+      font-size: .82rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .85rem .7rem;
+      transition: color .2s, background .2s;
+      border-radius: 3px;
+    }
+    nav a.nav-link:hover { color: #fff; background: rgba(255,255,255,.15); }
+    nav .sep { color: rgba(255,255,255,.4); font-size: .9rem; padding: 0 .1rem; }
+
+    /* ── SECTIONS ── */
+    section { padding: 3.5rem 1.5rem; }
+    section:nth-child(even) { background: var(--blue-light); }
+    .inner { max-width: 960px; margin: 0 auto; }
+
+    h2.section-title {
+      font-family: Arial, sans-serif;
+      font-size: 1.55rem;
+      letter-spacing: .04em;
+      color: var(--blue-dark);
+      text-align: center;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+
+    /* ── HOME ── */
+    #home .hero {
+      display: flex;
+      gap: 2.5rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    #home .hero img {
+      width: 280px;
+      max-width: 100%;
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.18);
+      flex-shrink: 0;
+    }
+    #home .hero .info h1 {
+      font-size: 2rem;
+      color: var(--blue-dark);
+      margin-bottom: .4rem;
+    }
+    #home .hero .info .title {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-style: italic;
+    }
+    #home .contact-block {
+      margin-top: .8rem;
+      font-family: Arial, sans-serif;
+      font-size: .95rem;
+      line-height: 2;
+      color: var(--text);
+    }
+    #home .contact-block a { color: var(--blue); text-decoration: none; }
+    #home .contact-block a:hover { text-decoration: underline; }
+    .office-hours {
+      display: inline-block;
+      margin-top: 1rem;
+      background: var(--blue);
+      color: #fff;
+      padding: .5rem 1rem;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+      font-size: .9rem;
+    }
+    .office-hours strong { display: block; font-size: .8rem; letter-spacing: .05em; text-transform: uppercase; opacity: .85; margin-bottom: .1rem; }
+
+    /* ── RESEARCH ── */
+    #research .research-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 680px) { #research .research-grid { grid-template-columns: 1fr; } }
+    #research img {
+      width: 100%;
+      border-radius: 6px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.15);
+    }
+    #research p { margin-bottom: 1rem; }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.2rem; }
+    .tag {
+      background: var(--blue);
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: .78rem;
+      padding: .25rem .7rem;
+      border-radius: 20px;
+    }
+
+    /* ── PUBLICATIONS ── */
+    #publications .pub-controls {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    #publications .pub-controls a {
+      display: inline-block;
+      background: var(--blue);
+      color: #fff;
+      padding: .5rem 1.3rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+      font-size: .9rem;
+      transition: background .2s;
+    }
+    #publications .pub-controls a:hover { background: var(--blue-dark); }
+
+    ol.pub-list {
+      list-style: decimal;
+      padding-left: 1.6rem;
+    }
+    ol.pub-list li {
+      padding: .45rem 0;
+      font-size: .97rem;
+      line-height: 1.65;
+    }
+    ol.pub-list li em { font-style: italic; }
+    ol.pub-list li strong { font-weight: bold; }
+    ol.pub-list li a { color: var(--blue); text-decoration: none; }
+    ol.pub-list li a:hover { text-decoration: underline; }
+    .note { font-size: .88rem; color: var(--muted); font-style: italic; }
+
+    h3.sub-heading {
+      font-family: Arial, sans-serif;
+      font-size: 1.1rem;
+      color: var(--blue-dark);
+      margin: 2rem 0 1rem;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      border-left: 4px solid var(--blue);
+      padding-left: .7rem;
+    }
+
+
+    /* ── TEACHING ── */
+    #teaching .teach-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 680px) { #teaching .teach-grid { grid-template-columns: 1fr; } }
+    #teaching img {
+      width: 100%;
+      border-radius: 6px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.15);
+    }
+    #teaching p { margin-bottom: 1rem; }
+    #teaching a { color: var(--blue); text-decoration: none; }
+    #teaching a:hover { text-decoration: underline; }
+    .course-list { list-style: none; padding: 0; margin-top: .5rem; }
+    .course-list li {
+      padding: .4rem 0;
+      border-bottom: 1px solid var(--border);
+      font-family: Arial, sans-serif;
+      font-size: .93rem;
+    }
+    .course-list li span.code { color: var(--blue); font-weight: bold; min-width: 120px; display: inline-block; }
+
+    /* ── ABOUT ── */
+    #about .about-grid {
+      display: flex;
+      gap: 2.5rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    #about img {
+      width: 220px;
+      max-width: 100%;
+      border-radius: 6px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.15);
+      flex-shrink: 0;
+    }
+    #about p { margin-bottom: 1rem; }
+    #about a { color: var(--blue); text-decoration: none; }
+    #about a:hover { text-decoration: underline; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--blue-dark);
+      color: rgba(255,255,255,.8);
+      text-align: center;
+      padding: 1.5rem;
+      font-family: Arial, sans-serif;
+      font-size: .85rem;
+    }
+    footer a { color: rgba(255,255,255,.85); }
+
+    @media (max-width: 600px) {
+      #home .hero img { width: 100%; }
+      nav .site-name { font-size: 1.1rem; }
+    }
+  </style>
 </head>
-<frameset rows="150,*" frameborder="no" border="0" framespacing="0">
-  <frame src="top.html" name="topFrame" id="topFrame" title="topFrame" marginwidth="250"/>
-  <frame src="main.html" name="mainFrame" id="mainFrame" title="mainFrame" marginwidth="250" />
-</frameset>
-<noframes><body>
-</body></noframes>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="site-name" href="#home">Eric M. Leibensperger</a>
+    <a class="nav-link" href="Leibensperger_CV.pdf" target="_blank">CV</a>
+    <span class="sep">·</span>
+    <a class="nav-link" href="#publications">Publications</a>
+    <span class="sep">·</span>
+    <a class="nav-link" href="#research">Research</a>
+    <span class="sep">·</span>
+    <a class="nav-link" href="#teaching">Teaching</a>
+    <span class="sep">·</span>
+    <a class="nav-link" href="#about">About Me</a>
+  </div>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <div class="inner">
+    <div class="hero">
+      <img src="eric.leibensperger2.jpg" alt="Eric M. Leibensperger">
+      <div class="info">
+        <h1>Eric M. Leibensperger</h1>
+        <p class="title">Associate Professor of Physics &mdash; Department of Physics and Astronomy, Ithaca College</p>
+        <div class="contact-block">
+          953 Danby Road, Center for Natural Sciences 265<br>
+          Ithaca, NY 14850<br>
+          p: 607-274-5722<br>
+          <a href="mailto:eleibensperger@ithaca.edu">eleibensperger [at] ithaca.edu</a>
+        </div>
+        <div class="office-hours">
+          <strong>Spring &lsquo;26 Office Hours</strong>
+          Monday, Tuesday, Wednesday 11:15–12:00<br>or by appointment
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="inner">
+    <h2 class="section-title">Research</h2>
+    <div class="research-grid">
+      <div>
+        <p>I am broadly interested in the dynamics of environmental systems, particularly the atmosphere, the broader climate system, and, more recently, lakes. Current projects include:</p>
+        <p><strong>(1)</strong> Monitoring methane in New York State to better understand sources and impacts on air quality (supported by NYSERDA and New York State Department of Agriculture and Markets in collaboration with colleagues at the University of Rochester, the University at Albany, Columbia University, and Cornell University).</p>
+        <p><strong>(2)</strong> Studying the impact of weather and climate on Lake Champlain water quality (supported by Lake Champlain SeaGrant and in collaboration with colleagues from SUNY Plattsburgh and Middlebury College). Funding support for previous research projects has come from the Environmental Protection Agency, the State University of New York, and the National Science Foundation.</p>
+        <p>My students and I maintain and use a number of advanced trace gas analyzers (Picarro G2301 [deployed long-term at Whiteface Mountain, NY], Aeris MIRA Ultra [methane/ethane], Aeris MIRA Strato [methane/ethane], LICOR 7810 [methane/CO&#x2082;], LICOR 7820 [N&#x2082;O]), meteorological equipment (numerous anemometers, multiparameter sensors), and drones capable of trace gas/weather sampling [DJI Matrice 600 Pro; DJI Matrice 300 RTK]. We commonly collect trace gas observations in our quick deploy mobile platform (Dodge Caravan) and with sensors backpacked.</p>
+        <div class="tag-list">
+          <span class="tag">Atmospheric Chemistry</span>
+          <span class="tag">Methane Emissions</span>
+          <span class="tag">Climate Change</span>
+          <span class="tag">Lake Champlain</span>
+          <span class="tag">Air Quality</span>
+          <span class="tag">Trace Gas Analysis</span>
+        </div>
+      </div>
+      <div>
+        <img src="JasonDrone.jpg" alt="Field research with drone">
+        <br><br>
+        <img src="EricMuhtasim.jpg" alt="Mobile research platform (Dodge Caravan)">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="inner">
+    <h2 class="section-title">Publications</h2>
+    <div class="pub-controls">
+      <a href="https://scholar.google.com/citations?user=p84ufMsAAAAJ" target="_blank">My Google Scholar Profile</a>
+    </div>
+
+    <ol class="pub-list" reversed>
+      <li>Catena, A. M., L. T. Murray, J. Zhang, <strong>E. M. Leibensperger</strong>, R. Commane, M. L. Smith, M. J. Schwab, A. Hallward-Driemeier, M. L. Loman, and J. J. Schwab (2026) <em>Intercomparison of methane emission rate methods using aerial and ground-level mobile monitoring at New York State landfills</em>, ACS ES&amp;T Air, 3, 1, 16-29, doi: <a href="https://doi.org/10.1021/acsestair.5c00145" target="_blank">10.1021/acsestair.5c00145</a></li>
+      <li>Catena, A. M., M. L. Smith, L. T. Murray, <strong>E. M. Leibensperger</strong>, J. Zhang, M. J. Schwab, and J. J. Schwab (2025) <em>Aerial estimates of methane and carbon dioxide emission rates using a mass balance approach in New York State</em>, Earth Syst Sci Data., 17, 4555-4568, doi: <a href="https://doi.org/10.5194/essd-17-4555-2025" target="_blank">10.5194/essd-17-4555-2025</a></li>
+      <li>Loman, M. L., L. T. Murray, <strong>E. M. Leibensperger</strong>, and J. D. Maasakkers (2025) <em>A high-resolution inventory of anthropogenic methane emissions in New York State</em>, Environ. Sci. Technol., 59 (32), doi: <a href="https://doi.org/10.1021/acs.est.5c07245" target="_blank">10.1021/acs.est.5c07245</a></li>
+      <li>Carrea, L., C. J. Merchant, R. I. Woolway, J.-F. Cretaux, T. M. Dokulil, H. Dugan, A. Laas, <strong>E. Leibensperger</strong>, S.-I. Matsuzaki, D. Pierson, O. O. Rusanovskaya, S. V. Shimaraeva, E. A. Silow, M. Schmid, M. A. Timofeyev, and P. Verburg (2025) <em>Lake Surface Water Temperature</em> in State of the Climate 2024, Bull. Amerc. Meteor. Soc., 106 (8), doi: <a href="https://doi.org/10.1175/BAMS-D-25-0102.1" target="_blank">10.1175/BAMS-D-25-0102.1</a></li>
+      <li>Murray, L. T., <strong>E. M. Leibensperger</strong>, L. J. Mickley, and A. P. K. Tai (2024) <em>Estimating future climate change impacts on human mortality and crop yields via air pollution</em>, Proc. Natl. Acad. Sci. USA, 121 (39), doi: <a href="https://doi.org/10.1073/pnas.2400117121" target="_blank">10.1073/pnas.2400117121</a></li>
+      <li>Carrea, L., C. J. Merchant, R. I. Woolway, J.-F. Cretaux, T. M. Dokulil, H. Dugan, A. Laas, <strong>E. Leibensperger</strong>, S.-I. Matsuzaki, L. J. Merio, D. Pierson, O. O. Rusanovskaya, S. V. Shimaraeva, E. A. Silow, M. Schmid, M. A. Timofeyev, and P. Verburg (2024) <em>Lake Surface Water Temperature</em> in State of the Climate 2023, Bull. Amerc. Meteor. Soc., 105 (8), doi: <a href="https://doi.org/10.1175/2024BAMSStateoftheClimate.1" target="_blank">10.1175/2024BAMSStateoftheClimate.1</a></li>
+      <li><strong>Weil, M.</strong>, <strong>M. Konieczny</strong>, <strong>M. Hossain</strong>, <strong>J. Cooney</strong>, and <strong>E. M. Leibensperger</strong> (2023) <em>Contributing to a Greener NY: Analysis of Methane Emissions in NYS</em>, J. Undergrad. Rep. Phys, 33, 100007, doi: <a href="https://doi.org/10.1063/10.0022471" target="_blank">10.1063/10.0022471</a></li>
+      <li>Carrea, L., C. J. Merchant, J.-F. Creatux, C. DeGasperi, T. M. Dokulil, H. Dugan, B. Gibbes, A. Laas, <strong>E. M. Leibensperger</strong>, S. Maberly, L. May, S.-I. Matsuzaki, G. Monet, D. Pierson, M. Pulkkanen, O. O. Rusanovskaya, S. V. Shimaraeva, E. A. Silow, M. Schmid, M. A. Timofeyev, P. Verburg, R. I. Woolway (2023) <em>Lake Surface Water Temperature</em> in State of the Climate 2022, Bull. Amerc. Meteor. Soc., 104 (9), doi: <a href="https://doi.org/10.1175/BAMS-D-23-0090.1" target="_blank">10.1175/BAMS-D-23-0090.1</a></li>
+      <li><strong>Leibensperger, E. M.</strong>, <strong>M. Konieczny</strong>, <strong>M. Weil</strong> (2023) <em>Uncertainty in the Mobile Observation of Wind</em>, Atmosphere, 14(5), 765, doi: <a href="https://doi.org/10.3390/atmos14050765" target="_blank">10.3390/atmos14050765</a></li>
+      <li>Catena, A. M., J. Zhang, R. Commane, L. T. Murray, M. J. Schwab, <strong>E. M. Leibensperger</strong>, J. Marto, M. L. Smith, and J. J. Schwab (2022) <em>Hydrogen sulfide emission properties from two large landfills in New York State</em>, Atmosphere, 13, 1251, doi: <a href="https://doi.org/10.3390/atmos13081251" target="_blank">10.3390/atmos13081251</a></li>
+      <li>Liszka, J., R. Card, P. Clark, K. J. Coleman, <strong>E. Leibensperger</strong>, B. Mattingly, M. McGuire, J. Nollenberg, K. Vanslyke-Briggs, and L. Wilson (2022) <em>The Common Problems Project: An Interdisciplinary, Community-Engaged, Problem-Based Pedagogy</em>, Journal of the Scholarship of Teaching and Learning, 22, 2, 96-118, doi: <a href="https://doi.org/10.14434/josotl.v22i2.31645" target="_blank">10.14434/josotl.v22i2.31645</a></li>
+      <li>Murray, L. T., <strong>E. M. Leibensperger</strong>, C. Orbe, L. J. Mickley, and M. Sulprizo (2021) <em>GCAP 2.0: A global 3-D chemical transport model framework for past, present, and future climate scenarios</em>, Geosci Model Dev., 14, 5789-5823, doi: <a href="https://doi.org/10.5194/gmd-14-5789-2021" target="_blank">10.5194/gmd-14-5789-2021</a></li>
+      <li>Zhang, H., S. Wu, and <strong>E. M. Leibensperger</strong> (2021) <em>Source-receptor relationships for atmospheric mercury deposition in the context of global change</em>, Atmos. Env., 254, doi: <a href="https://doi.org/10.1016/j.atmosenv.2021.118349" target="_blank">10.1016/j.atmosenv.2021.118349</a></li>
+      <li>Penny, S. M., R. Smyth, G. Sethi, <strong>E. M. Leibensperger</strong>, C. Gervich, and P. Batur (2019) "Multidisciplinary and Topical in the Science Classroom: Regulating Carbon Emissions to Mitigate Climate Change" in <em>Interdisciplinary Teaching About Earth and the Environment for a Sustainable Future</em>, Gosselin, D. C., A. E. Egger, and J. Taber (Eds.), Springer.</li>
+      <li>Mao, J., A. Carlton, R. C. Cohen, W. H. Brune, J. L. Jimenez, H. O. T. Pye, N. L. Ng, B. McDonald, C. Warneke, J. de Gouw, L. J. Mickley, <strong>E. M. Leibensperger</strong>, R. Mathur, and L. Horowtiz (2018) <em>Southeast Atmosphere Studies: Learning from model-observation syntheses</em>, Atmos. Chem. Phys., 18, 2615-2651, doi: <a href="https://doi.org/10.5194/acp-18-2615-2018" target="_blank">10.5194/acp-18-2615-2018</a></li>
+      <li>Shen, L., L. J. Mickley, <strong>E. M. Leibensperger</strong>, and M. Li (2017) <em>Atlantic Multidecadal Oscillation drives multidecadal variability of summertime surface air quality in the eastern United States</em>, Geophys. Res. Lett., 44, doi: <a href="https://doi.org/10.1002/2017GL075905" target="_blank">10.1002/2017GL075905</a></li>
+      <li>Cusworth, D., L. J. Mickley, <strong>E. M. Leibensperger</strong>, and M. Iacono (2017) <em>Aerosol trends as a potential driver of regional climate in the central United States: Evidence from observations</em>, Atmos. Chem. Phys., 17, 13559-13572, doi: <a href="https://doi.org/10.5194/acp-17-13559-2017" target="_blank">10.5194/acp-17-13559-2017</a></li>
+      <li>Fiore, A. M., V. Naik, and <strong>E. M. Leibensperger</strong> (2015) <em>Air quality and climate connections</em>, J. Air Waste Manage., 65 (6), 645-685, doi: <a href="https://doi.org/10.1080/10962247.2015.1040526" target="_blank">10.1080/10962247.2015.1040526</a></li>
+      <li>Oswald, E., L.-A. Dupigny-Giroux, <strong>E. Leibensperger</strong>, R. Poirot, and J. Merrell (2015) <em>Climate controls on air quality in the Northeastern U.S.: An examination of ozone statistics during 1993-2012</em>, Atmos. Environ., 112, 278-288, doi: <a href="https://doi.org/10.1016/j.atmosenv.2015.04.019" target="_blank">10.1016/j.atmosenv.2015.04.019</a></li>
+      <li><strong>Leibensperger, E. M.</strong> and R. A. Plumb (2014) <em>Effective diffusivity in baroclinic flow</em>, J. Atmos. Sci, 71 (3), 972-984, doi: <a href="https://doi.org/10.1175/JAS-D-13-0217.1" target="_blank">10.1175/JAS-D-13-0217.1</a></li>
+      <li>Barrett, S. R. H., S. H. L. Yim, C. K. Gilmore, L. T. Murray, S. R. Kuhn, A. P. K. Tai, R. M. Yantosca, D. W. Byun, F. Ngan, X. Li, J. Levy, A. Ashok, J. Koo, H. M. Wong, O. Dessens, S. Balasubramanian, G. G. Fleming, C. Wollersheim, R. Malina, M. N. Pearlson, S. Arunachalam, F. S. Binkowski, <strong>E. M. Leibensperger</strong>, D. J. Jacob, J. I. Hileman, and I. A. Waitz (2012) <em>Public health, climate and economic impacts of desulfurizing jet fuel</em>, Environ. Sci. Technol., 26, 4275-4282, doi: <a href="https://doi.org/10.1021/es203325a" target="_blank">10.1021/es203325a</a></li>
+      <li><strong>Leibensperger, E. M.</strong>, L. J. Mickley, D. J. Jacob, W.-T. Chen, J. H. Seinfeld, A. Nenes, P. J. Adams, D. G. Streets, N. Kumar, and D. Rind (2012) <em>Climatic effects of 1950-2050 changes in US anthropogenic aerosols – Part 2: Climate response</em>, Atmos. Chem. Phys., 12, 3349-3362, doi: <a href="https://doi.org/10.5194/acp-12-3349-2012" target="_blank">10.5194/acp-12-3349-2012</a><br><span class="note">&#9733; Highlighted as the NASA Earth Observatory <a href="http://earthobservatory.nasa.gov/IOTD/view.php?id=77966" target="_blank">"Image of the Day"</a></span></li>
+      <li><strong>Leibensperger, E. M.</strong>, L. J. Mickley, D. J. Jacob, W.-T. Chen, J. H. Seinfeld, A. Nenes, P. J. Adams, D. G. Streets, N. Kumar, and D. Rind (2012) <em>Climatic effects of 1950-2050 changes in US anthropogenic aerosols – Part 1: Aerosol trends and radiative forcing</em>, Atmos. Chem. Phys., 12, 3333-3348, doi: <a href="https://doi.org/10.5194/acp-12-3333-2012" target="_blank">10.5194/acp-12-3333-2012</a></li>
+      <li>Tai, A. P. K., L. J. Mickley, D. J. Jacob, <strong>E. M. Leibensperger</strong>, L. Zhang, and J. A. Fisher (2012) <em>Meteorological modes of variability for fine particulate matter (PM<sub>2.5</sub>) air quality in the United States: Implications for PM<sub>2.5</sub> sensitivity to climate change</em>, Atmos. Chem. Phys., 12, 3131-3145, doi: <a href="https://doi.org/10.5194/acp-12-3131-2012" target="_blank">10.5194/acp-12-3131-2012</a></li>
+      <li>Mickley, L. J., <strong>E. M. Leibensperger</strong>, D. J. Jacob, and D. Rind (2012) <em>Regional warming from aerosol removal over the United States: Results from a transient 2010–2050 climate simulation</em>, Atmos. Environ., 45, 545-553, doi: <a href="https://doi.org/10.1016/j.atmosenv.2011.07.030" target="_blank">10.1016/j.atmosenv.2011.07.030</a></li>
+      <li>Wang, Q., D. J. Jacob, J. A. Fisher, J. Mao, <strong>E. M. Leibensperger</strong>, C. C. Carouge, P. Le Sager, Y. Kondo, J. L. Jimenez, M. J. Cubison, and S. J. Doherty (2011) <em>Sources of carbonaceous aerosols and deposited black carbon in the Arctic in winter-spring: Implications for radiative forcing</em>, Atmos. Chem. Phys., 11, 12453-12473, doi: <a href="https://doi.org/10.5194/acp-11-12453-2011" target="_blank">10.5194/acp-11-12453-2011</a></li>
+      <li>Fisher, J. A., D. J. Jacob, Q. Wang, R. Bahreini, C. C. Carouge, M. J. Cubison, J. E. Dibb, T. Diehl, J. L. Jimenez, <strong>E. M. Leibensperger</strong>, M. B. J. Meinders, H. O. T. Pye, P. K. Quinn, S. Sharma, A. van Donkelaar, and R. M. Yantosca (2011) <em>Sources, distribution, and acidity of sulfate-ammonium aerosol in the Arctic in winter-spring</em>, Atmos. Environ., 45, 7301-7318, doi: <a href="https://doi.org/10.1016/j.atmosenv.2011.08.030" target="_blank">10.1016/j.atmosenv.2011.08.030</a></li>
+      <li>Murphy, D. M., J. C. Chow, <strong>E. M. Leibensperger</strong>, W. C. Malm, C. McDade, M. Pitchford, B. A. Schichtel, J. G. Watson, and W. H. White (2011) <em>Decreases in elemental carbon and fine particle mass in the United States</em>, Atmos. Chem. Phys., 11, 4679-4686, doi: <a href="https://doi.org/10.5194/acp-11-4679-2011" target="_blank">10.5194/acp-11-4679-2011</a></li>
+      <li><strong>Leibensperger, E. M.</strong>, L. J. Mickley, D. J. Jacob, and S. R. H. Barrett (2011) <em>Intercontinental influence of NO<sub>x</sub> and CO emissions on particulate matter air quality</em>, Atmos. Environ., 45, 3318-3324, doi: <a href="https://doi.org/10.1016/j.atmosenv.2011.02.023" target="_blank">10.1016/j.atmosenv.2011.02.023</a></li>
+      <li>Kopacz, M., D. L. Mauzerall, J. Wang, <strong>E. M. Leibensperger</strong>, D. K. Henze, and K. Singh (2011) <em>Origin and radiative forcing of black carbon transported to the Himalayas and Tibetan Plateau</em>, Atmos. Chem. Phys., 11, 2837-2852, doi: <a href="https://doi.org/10.5194/acp-11-2837-2011" target="_blank">10.5194/acp-11-2837-2011</a></li>
+      <li><strong>Leibensperger, E. M.</strong>, L. J. Mickley, and D. J. Jacob (2008) <em>Sensitivity of US air quality to mid-latitude cyclone frequency and implications of 1980-2006 climate change</em>, Atmos. Chem. Phys., 8, 7075-7086, doi: <a href="https://doi.org/10.5194/acp-8-7075-2008" target="_blank">10.5194/acp-8-7075-2008</a></li>
+      <li>Wu, S., L. J. Mickley, <strong>E. M. Leibensperger</strong>, D. J. Jacob, D. Rind, D. G. Streets (2008) <em>Effects of 2000-2050 global change on ozone air quality in the United States</em>, J. Geophys. Res., 113, D06302, doi: <a href="https://doi.org/10.1029/2007JD008917" target="_blank">10.1029/2007JD008917</a></li>
+      <li>Hudman, R. C., D. J. Jacob, S. Turquety, <strong>E. M. Leibensperger</strong>, L. T. Murray, S. Wu, A. B. Gilliland, M. Avery, T. H. Bertram, W. Brune, R. C. Cohen, J. E. Dibb, F. M. Flocke, A. Fried, J. Holloway, J. A. Neuman, R. Orville, A. Perring, X. Ren, G. W. Sachse, H. B. Singh, A. Swanson, and P. J. Wooldridge (2007) <em>Surface and lightning sources of nitrogen oxides over the United States: magnitudes, chemical evolution, and outflow</em>, J. Geophys. Res., 112, D12S05, doi: <a href="https://doi.org/10.1029/2006JD007912" target="_blank">10.1029/2006JD007912</a></li>
+      <li>Chen, C. H., B. A. Sargent, C. Bohac, K. H. Kim, <strong>E. Leibensperger</strong>, M. Jura, J. Najita, W. J. Forrest, D. M. Watson, G. C. Sloan, and L. D. Keller (2006) <em>Spitzer IRS Spectroscopy of IRAS-Discovered Debris Disks</em>, Astrophys. J. Suppl. S., 166, 351-377, doi: <a href="https://doi.org/10.1086/505751" target="_blank">10.1086/505751</a></li>
+      <li>Sloan, G. C., L. D. Keller, W. J. Forrest, <strong>E. Leibensperger</strong>, B. Sargent, A. Li, J. Najita, D. M. Watson, B. R. Brandl, C. H. Chen, J. D. Green, F. Markwick-Kemper, T. L. Herter, P. D'Alessio, P. W. Morris, D. J. Barry, P. Hall, P. C. Meyers, and J. Houck (2005) <em>Mid-Infrared Spectra of Polycyclic Aromatic Hydrocarbon Emission in Herbig Ae/Be Stars</em>, Astrophys. J., 632, 956-963, doi: <a href="https://doi.org/10.1086/444371" target="_blank">10.1086/444371</a></li>
+    </ol>
+
+  </div>
+</section>
+
+<!-- TEACHING -->
+<section id="teaching">
+  <div class="inner">
+    <h2 class="section-title">Teaching</h2>
+    <div class="teach-grid">
+      <div>
+        <p>I am an Associate Professor in the <a href="https://www.ithaca.edu/academics/school-humanities-and-sciences/physics-and-astronomy" target="_blank">Department of Physics and Astronomy</a> at <a href="https://www.ithaca.edu" target="_blank">Ithaca College</a>. Teaching is an important aspect of my career. My goal is to realize the teacher-scholar ideal: combining an active research program with best practice teaching methods to provide students both state of the science knowledge and problem-solving skills.</p>
+        <p>I teach classes across the physics curriculum and an <a href="https://www.ithaca.edu/academics/integrated-core" target="_blank">Integrated Core Curriculum</a> course on the science and politics of climate change. Physics courses that I have taught include:</p>
+        <ul class="course-list">
+          <li><span class="code">PHYS 101</span> Introduction to Physics I</li>
+          <li><span class="code">PHYS 110</span> Introductory Mathematical and Computational Methods for Physics</li>
+          <li><span class="code">PHYS/ENVS 147</span> Time to Act: The Science and Politics of Climate Change</li>
+          <li><span class="code">PHYS/ENVS 148</span> Forecasting the Skies: An Introduction to Weather</li>
+          <li><span class="code">PHYS 260</span> Intermediate Physics Laboratory</li>
+          <li><span class="code">PHYS 280</span> Learning Assistant Practicum</li>
+          <li><span class="code">PHYS 301/310</span> Mathematical Methods of Physics</li>
+          <li><span class="code">PHYS 305/323</span> Electromagnetism</li>
+          <li><span class="code">PHYS 311</span> Classical Mechanics (numerical modeling recitation)</li>
+          <li><span class="code">PHYS 360</span> Advanced Physics Laboratory</li>
+          <li><span class="code">PHYS 470</span> Special Topics in Advance Physics: Fluid Dynamics</li>
+          <li><span class="code">PHYS 497</span> Senior Thesis I</li>
+          <li><span class="code">PHYS 498</span> Senior Thesis II</li>
+        </ul>
+      </div>
+      <div>
+        <img src="eric_and_connor.jpg" alt="Eric teaches Connor about NOx measurements at the Whiteface Mountain Field Station">
+        <p style="font-size:.85rem;color:var(--muted);margin-top:.5rem;font-style:italic;">Eric teaches Connor about NO&#x2093; measurements at the <a href="http://www.whiteface.com/mountain/research" target="_blank">Whiteface Mountain Field Station</a>.</p>
+        <br>
+        <img src="climate_change_science_IR.jpg" alt="My Climate Change Science class as viewed through a thermal (IR) imager.">
+        <p style="font-size:.85rem;color:var(--muted);margin-top:.5rem;font-style:italic;">My Climate Change Science class as viewed through a thermal (IR) imager.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="inner">
+    <h2 class="section-title">About Me</h2>
+    <div class="about-grid">
+      <img src="cascadilla.jpg" alt="Eric Leibensperger">
+      <div>
+        <p>I grew up in <a href="https://en.wikipedia.org/wiki/Kutztown,_Pennsylvania" target="_blank">Kutztown, PA</a>, a small town in <a href="https://en.wikipedia.org/wiki/Pennsylvania_Dutch" target="_blank">Pennsylvania Dutch</a> country. After I graduated from Kutztown Area High School, I attended Ithaca College in Ithaca, NY. At IC I was interested in both <a href="https://en.wikipedia.org/wiki/Physics" target="_blank">physics</a> and <a href="https://en.wikipedia.org/wiki/Chemistry" target="_blank">chemistry</a>, an aspect of my teaching and research that is ongoing.</p>
+        <p>I worked with the <a href="http://acmg.seas.harvard.edu/" target="_blank">Atmospheric Chemistry Modeling Group</a> at Harvard for my graduate studies where I studied the interactions between atmospheric chemistry and climate. I studied atmospheric transport and dynamics with Alan Plumb as a postdoc at MIT.</p>
+        <p>I am an Associate Professor in the <a href="https://www.ithaca.edu/academics/school-humanities-and-sciences/physics-and-astronomy" target="_blank">Department of Physics and Astronomy</a> at Ithaca College. I strive to be a "teacher-scholar", balancing both education and research. I previously taught in the <a href="https://www.plattsburgh.edu/academics/schools/arts-science/center-earth-environmental-science/" target="_blank">Center for Earth and Environmental Science</a> at SUNY Plattsburgh. I graduated with a BA in chemistry and physics from Ithaca College.</p>
+        <p>When not busy with teaching, research, or parenting, I enjoy hiking and watching ice hockey (go Flyers!) and football (go Eagles!). I am a big fan of music and enjoy performing as well as attending rock and jazz concerts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Eric M. Leibensperger &bull; Department of Physics and Astronomy &bull; Ithaca College<br>
+  <a href="mailto:eleibensperger@ithaca.edu">eleibensperger@ithaca.edu</a> &bull; 607-274-5722</p>
+</footer>
+
+<script>
+  // Smooth scrolling for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Highlight active nav link
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a.nav-link');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.background = a.getAttribute('href') === '#' + current
+        ? 'rgba(255,255,255,.2)' : '';
+    });
+  });
+</script>
+</body>
 </html>
